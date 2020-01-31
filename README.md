@@ -1,7 +1,7 @@
 # EyeService
 
 #### 介绍
-C++服务系统，标准C++14 C++17，ThreadPool，httpService，websocket，log，mysql，json基本库，小麻雀五脏俱全
+C++服务系统，标准C++11，ThreadPool，httpService，websocket，log，mysql，json基本库，小麻雀五脏俱全
 
 #### 软件架构
 软件架构说明
