@@ -1,5 +1,6 @@
 #include "Database.h"
 #include "QueryResult.h"
+#include <assert.h>
 
 QueryResult::QueryResult(MYSQL_RES* result, MYSQL_FIELD* fields, uint64 rowCount, uint32 fieldCount) : 
     m_pResult(result), 
@@ -8,7 +9,7 @@ QueryResult::QueryResult(MYSQL_RES* result, MYSQL_FIELD* fields, uint64 rowCount
 {
     m_pCurrentRow = new DbField[m_uiFieldCount];
 
-    ASSERT(m_pCurrentRow);
+    assert(m_pCurrentRow);
     NextRow();
 }
 

@@ -3,6 +3,8 @@
 #include <ctime>
 #include <iostream>
 #include <fstream>
+#include <assert.h>
+#include <sstream>
 
 // Keep track of how many database connections the 
 size_t Database::m_stDatabaseCount = 0;
@@ -123,7 +125,7 @@ bool Database::Initialize(const char* infoString)
             return false;
         }
 
-        my_bool my_true = (my_bool)1;
+        bool my_true = (bool)1;
         mysql_options(m_pMYSQL, MYSQL_OPT_RECONNECT, &my_true);
         return true;
     }
@@ -207,7 +209,7 @@ std::shared_ptr<QueryResult> Database::LockedPerformQuery(const std::string strQ
 
 std::shared_ptr<QueryResult> Database::PerformQuery(const std::string strQuery)
 {
-    ASSERT(m_pMYSQL);
+    assert(m_pMYSQL);
     
     if (!RawMysqlQueryCall(strQuery))
         return nullptr;
@@ -238,7 +240,7 @@ std::shared_ptr<QueryResult> Database::PerformQuery(const std::string strQuery)
 
 void Database::BeginManyQueries()
 {
-    ASSERT(!m_bQueriesTransaction);
+    assert(!m_bQueriesTransaction);
     m_bQueriesTransaction = true;
 }
 
@@ -288,7 +290,7 @@ bool Database::QueueExecuteQuery(const char*  format,...)
     }
     else
     {
-        ASSERT(!strQuery.empty());
+        assert(!strQuery.empty());
         m_queueQueries.push(std::make_shared<QueryObj>(strQuery));
     }
 
@@ -297,7 +299,7 @@ bool Database::QueueExecuteQuery(const char*  format,...)
 
 bool Database::RawMysqlQueryCall(const std::string strQuery, const bool bDeleteGatheredData)
 {    
-    ASSERT(m_pMYSQL);
+    assert(m_pMYSQL);
 
     if (mysql_query(m_pMYSQL, strQuery.c_str()))
     {
@@ -326,7 +328,7 @@ void Database::EscapeString(std::string& str)
         return;
 
     char strResult[MAX_QUERY_LEN];
-    ASSERT(str.size() < MAX_QUERY_LEN);
+    assert(str.size() < MAX_QUERY_LEN);
     
     mysql_real_escape_string(m_pMYSQL, strResult, str.c_str(), str.size());
     
@@ -349,7 +351,7 @@ void Database::CallbackResult(const uint64 id, std::shared_ptr<CallbackQueryObj:
     m_uoCallbackQueries[id] = result;
 }
 
-void Database::GrabAndClearCallbackQueries(std::unordered_map<uint64, std::shared_ptr<CallbackQueryObj::ResultQueryHolder>>& result)
+void Database::GrabAndClearCallbackQueries(std::map<uint64, std::shared_ptr<CallbackQueryObj::ResultQueryHolder>>& result)
 {
     std::lock_guard<std::mutex> lock(m_mutexCallbackQueries);
     result = m_uoCallbackQueries;

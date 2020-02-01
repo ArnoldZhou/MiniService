@@ -6,7 +6,7 @@
 #include "QueryObjects.h"
 
 #include <mysql.h>
-#include <unordered_map>
+#include <map>
 #include <thread>
 
 #define MAX_QUERY_LEN 8192
@@ -39,7 +39,7 @@ class Database
         
         void Ping();
         void EscapeString(std::string& str);
-        void GrabAndClearCallbackQueries(std::unordered_map<uint64, std::shared_ptr<CallbackQueryObj::ResultQueryHolder>>& result);
+        void GrabAndClearCallbackQueries(std::map<uint64, std::shared_ptr<CallbackQueryObj::ResultQueryHolder>>& result);
         
 		// Adds to the async queue
         void BeginManyQueries();
@@ -47,7 +47,7 @@ class Database
         void CancelManyQueries();
         
 		// Query: Non-blocking, adds to the async queue
-        void queueCallbackQuery(const uint64 id, const std::unordered_map<uint8, std::string>& queries, const std::string msgToSelf = "") 
+        void queueCallbackQuery(const uint64 id, const std::map<uint8, std::string>& queries, const std::string msgToSelf = "") 
         { 
             m_queueQueries.push(std::shared_ptr<CallbackQueryObj>(new CallbackQueryObj(id, msgToSelf, queries)));
         }
@@ -106,7 +106,7 @@ class Database
         std::vector<std::string> m_vTransactionQueries;
 
         // The results of queued queries with callbacks.
-        std::unordered_map<uint64, std::shared_ptr<CallbackQueryObj::ResultQueryHolder>> m_uoCallbackQueries;
+        std::map<uint64, std::shared_ptr<CallbackQueryObj::ResultQueryHolder>> m_uoCallbackQueries;
 };
 
 #endif

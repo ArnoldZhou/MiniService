@@ -1,5 +1,6 @@
 #ifndef QUERYOBJECTS_H
 #define QUERYOBJECTS_H
+#include <map>
 
 class Database;
 class QueryResult;
@@ -38,7 +39,7 @@ class CallbackQueryObj : public QueryObj
             m_uoQueries[0] = query;
         }
 
-        CallbackQueryObj(const uint64 id, const std::string msgToSlelf, const std::unordered_map<uint8, std::string>& queries) :
+        CallbackQueryObj(const uint64 id, const std::string msgToSlelf, const std::map<uint8, std::string>& queries) :
                 m_uoQueries(queries),
                 m_uiId(id)
         {}
@@ -68,7 +69,7 @@ class CallbackQueryObj : public QueryObj
 
             private:
                 const std::string m_strMsgToSelf;
-                std::unordered_map<uint8, std::shared_ptr<QueryResult>> m_results;
+                std::map<uint8, std::shared_ptr<QueryResult>> m_results;
         };
 
         void operator=(const CallbackQueryObj &otherObj)
@@ -85,7 +86,7 @@ class CallbackQueryObj : public QueryObj
         const uint64 m_uiId;
         const std::string m_strMsgToSelf;
 
-        std::unordered_map<uint8, std::string> m_uoQueries;
+        std::map<uint8, std::string> m_uoQueries;
 };
 
 #endif

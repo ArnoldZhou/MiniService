@@ -10,6 +10,10 @@ OBJECTS += \
 $(ACTIVE)/main.cpp \
 $(ACTIVE)/game_server/api/Api.cpp\
 $(ACTIVE)/common/mongoose.c\
+$(ACTIVE)/common/mysql/DbField.cpp \
+$(ACTIVE)/common/mysql/QueryObject.cpp \
+$(ACTIVE)/common/mysql/QueryResult.cpp \
+$(ACTIVE)/common/mysql/Database.cpp \
 $(ACTIVE)/game_server/Game.cpp\
 $(ACTIVE)/http_server/Server.cpp\
 $(ACTIVE)/service/puke-center/PukeCenterService.cpp\
