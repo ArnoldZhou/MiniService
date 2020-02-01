@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
     mysql_close(connection);
 
 	std::string path(__CONFIG_PATH__);
-	std::ifstream i("../config/default.json");
+	std::ifstream i("./config/default.json");
     
 	nlohmann::json defaultConfig;
 
