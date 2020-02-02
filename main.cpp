@@ -43,9 +43,9 @@ int main(int argc, char *argv[]) {
 	logger.info("{0}", defaultConfig.dump(4));
  
     // Initialize the world database
-    //"127.0.0.1","root","zsjss0523","mysql"
+    //"127.0.0.1","root","","mysql"
 	logger.info("Initialize the world database");
-    if (!gameDb->Initialize("127.0.0.1;3306;root;zsjss0523;mysql"))
+    if (!gameDb->Initialize("127.0.0.1;3306;root;;mysql"))
     {
 		logger.error("GameServer::StartDB - Cannot connect to world database");
         return false;

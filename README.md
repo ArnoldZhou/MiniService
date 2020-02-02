@@ -53,7 +53,7 @@ int state;
 
 mysql_init(&mysql);
 
-connection = mysql_real_connect(&mysql,"127.0.0.1","root","zsjss0523","mysql",0,0,0);
+connection = mysql_real_connect(&mysql,"127.0.0.1","root","","mysql",0,0,0);
 
 // cout << connection;
 if (connection == NULL)
