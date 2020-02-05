@@ -8,18 +8,12 @@ OPTS = -D __CONFIG_PATH__=\"$(CONFIG_PATH)\" -std=c++11 -I${INCLUDE_PATH}
 
 OBJECTS += \
 $(ACTIVE)/main.cpp \
-$(ACTIVE)/game_server/api/Api.cpp\
 $(ACTIVE)/common/mongoose.c\
 $(ACTIVE)/common/mysql/DbField.cpp \
 $(ACTIVE)/common/mysql/QueryObject.cpp \
 $(ACTIVE)/common/mysql/QueryResult.cpp \
 $(ACTIVE)/common/mysql/Database.cpp \
-$(ACTIVE)/game_server/Game.cpp\
 $(ACTIVE)/http_server/Server.cpp\
-$(ACTIVE)/service/puke-center/PukeCenterService.cpp\
-$(ACTIVE)/service/room/Player.cpp\
-$(ACTIVE)/service/room/Room.cpp\
-$(ACTIVE)/service/room/RoomService.cpp\
 $(ACTIVE)/service/session/SessionService.cpp\
 
 server.out: $(OBJECTS)

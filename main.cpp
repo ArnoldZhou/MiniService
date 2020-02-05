@@ -1,10 +1,8 @@
 #include <iostream>
+#include <fstream>
 #include <memory>
 #include "./config.h"
-#include "./game_server/Game.h"
 #include "./http_server/Server.h"
-#include "./game_server/api/Api.h"
-#include "./base/error/Code.h"
 #include "./common/nlohmann/json.hpp"
 #include "./common/ThreadPool.h"
 #include "./common/spdlog/spdlog.h"
@@ -13,12 +11,8 @@
 #include "./common/mysql/Database.h"
 
 // server的static变量安排一下
-auto gameApi = api::Api();
-auto gameDb  = std::shared_ptr<Database>(new Database);
+auto dbServer  = std::shared_ptr<Database>(new Database);
 auto httpServer = std::shared_ptr<server::Server>(new server::Server);
-auto gameServer = std::shared_ptr<server::Game>(new server::Game);
-auto errorCode = std::shared_ptr<error::ErrorCode>(new error::ErrorCode);
-auto threadPool = std::shared_ptr<ThreadPool>(new ThreadPool(5));
 
 int main(int argc, char *argv[]) {
 	auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
@@ -33,40 +27,25 @@ int main(int argc, char *argv[]) {
     logger.warn("this should appear in both console and file");
     logger.info("this message should not appear in the console, only in the file");
 
-	std::string path(__CONFIG_PATH__);
 	std::ifstream i("./config/default.json");
-    
 	nlohmann::json defaultConfig;
 	i >> defaultConfig;
 
 	logger.info("加载默认配置");
 	logger.info("{0}", defaultConfig.dump(4));
  
-    // Initialize the world database
-    //"127.0.0.1","root","","mysql"
-	logger.info("Initialize the world database");
-    if (!gameDb->Initialize("127.0.0.1;3306;root;;mysql"))
+	logger.info("Initialize the database");
+    if (!dbServer->Initialize("127.0.0.1;3306;root;;mysql"))
     {
-		logger.error("GameServer::StartDB - Cannot connect to world database");
-        return false;
+		logger.error("StartDB - Cannot connect to database");
+        return -1;
     }
-
-	if (std::shared_ptr<QueryResult> result = gameDb->Query("show tables;"))
-	{
-    	do
-    	{
-        	DbField* pFields = result->fetchCurrentRow();    
-        	const std::string name = pFields[0].getCppString();
-			logger.info("table name: {0}..", name);
-    	}
-    	while (result->NextRow());
-	}
 
 	httpServer->Init(std::to_string(defaultConfig["port"].get<int>()));
 
 	httpServer->Start();
 	
 	// Cleanup
-	gameDb->Uninitialise();
+	dbServer->Uninitialise();
 	return 0;
 }

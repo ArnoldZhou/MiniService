@@ -4,11 +4,9 @@
 #include "../common/mongoose.h"
 #include "../common/nlohmann/json.hpp"
 #include "Server.h"
-#include "../game_server/Game.h"
 #include <string>
 
 extern server::Server* httpServer;
-extern server::Game* gameServer;
 
 namespace server {
 
@@ -34,13 +32,7 @@ void OnHttpWebsocketEvent(mg_connection* connection, int event_type, void* event
 }
 
 void HandleWebsocketMessage(mg_connection* connection, int event_type, websocket_message* ws_msg) {
-    if (event_type == MG_EV_WEBSOCKET_HANDSHAKE_DONE) {
-        gameServer->Connecte(connection);
-	} else if (event_type == MG_EV_WEBSOCKET_FRAME) {
-        gameServer->Receive(connection, ws_msg);
-	} else if (event_type == MG_EV_CLOSE) {
-		gameServer->Close(connection);
-	}
+
 }
 
 void HandleHttpEvent(mg_connection* connection, http_message* http_req) {

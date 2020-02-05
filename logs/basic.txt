@@ -1,0 +1,9 @@
+[2020-02-05 15:38:48.048] [multi_sink] [warning] this should appear in both console and file
+[2020-02-05 15:38:48.050] [multi_sink] [info] this message should not appear in the console, only in the file
+[2020-02-05 15:38:48.051] [multi_sink] [info] 加载默认配置
+[2020-02-05 15:38:48.051] [multi_sink] [info] {
+    "host": "localhost",
+    "port": 7999
+}
+[2020-02-05 15:38:48.051] [multi_sink] [info] Initialize the world database
+[2020-02-05 15:38:48.111] [multi_sink] [error] GameServer::StartDB - Cannot connect to world database
